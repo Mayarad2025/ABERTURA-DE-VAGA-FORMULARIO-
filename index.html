@@ -77,13 +77,29 @@ button {
 @media (max-width: 700px) {
   .field-row { flex-direction: column; }
 }
+
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+}
 </style>
 </head>
 
 <body>
 <div class="wrapper">
 
+<div class="logo">
+  <img src="assets/logoGBF.png" alt="Grupo Brasil Forte">
+</div>
+
 <form
+  id="formVaga"
   action="https://formsubmit.co/mayara.dantas@grupobrasilforte.com.br"
   method="POST"
   enctype="multipart/form-data">
@@ -95,6 +111,13 @@ button {
   <input type="text" id="protocolo" name="PROTOCOLO" readonly>
 </div>
 
+<!-- SOLICITANTE -->
+<div class="field-group">
+  <label>SOLICITANTE</label>
+  <input type="text" name="SOLICITANTE" required>
+</div>
+
+<!-- DATAS -->
 <div class="field-row field-group">
   <div>
     <label>DATA DA ABERTURA</label>
@@ -106,28 +129,24 @@ button {
   </div>
 </div>
 
-<div class="field-row field-group">
-  <div>
-    <label>SOLICITANTE</label>
-    <input type="text" name="SOLICITANTE" required>
-  </div>
-  <div>
-    <label>CARGO</label>
-    <input type="text" name="CARGO" required>
-  </div>
-</div>
-
-<div class="field-group">
-  <label>POSTO DE TRABALHO</label>
-  <input type="text" name="POSTO DE TRABALHO" required>
-</div>
-
+<!-- QUANTIDADE -->
 <div class="field-group">
   <label>QUANTIDADE DE VAGAS</label>
   <input type="number" name="QUANTIDADE DE VAGAS" min="1" required>
 </div>
 
-<!-- ESCALA + HORÁRIOS -->
+<!-- POSTO -->
+<div class="field-group">
+  <label>POSTO DE TRABALHO</label>
+  <input type="text" name="POSTO DE TRABALHO" required>
+</div>
+
+<!-- CARGO -->
+<div class="field-group">
+  <label>CARGO</label>
+  <input type="text" name="CARGO" required>
+</div>
+
 <div class="field-row field-group">
   <div>
     <label>ESCALA</label>
@@ -150,22 +169,14 @@ button {
   </div>
 </div>
 
-<!-- CHECKBOX -->
 <div class="field-group">
   <label>CADASTRAMENTO PRÉVIO EM PORTAL</label>
   <div class="options" style="display:flex; gap:30px;">
-    <label>
-      <input type="checkbox" id="portalSim" name="CADASTRAMENTO PREVIO EM PORTAL" value="SIM">
-      SIM
-    </label>
-    <label>
-      <input type="checkbox" id="portalNao" name="CADASTRAMENTO PREVIO EM PORTAL" value="NÃO">
-      NÃO
-    </label>
+    <label><input type="checkbox" id="portalSim" name="CADASTRAMENTO PREVIO EM PORTAL" value="SIM"> SIM</label>
+    <label><input type="checkbox" id="portalNao" name="CADASTRAMENTO PREVIO EM PORTAL" value="NÃO"> NÃO</label>
   </div>
 </div>
 
-<!-- TIPO DE CONTRATAÇÃO -->
 <div class="field-group">
   <label>TIPO DE CONTRATAÇÃO</label>
   <div class="options">
@@ -177,13 +188,11 @@ button {
   </div>
 </div>
 
-<!-- MOTIVO -->
 <div id="motivoGroup" class="field-group hidden">
   <label id="motivoLabel"></label>
   <input type="text" id="motivoInput" name="MOTIVO">
 </div>
 
-<!-- SUBSTITUIÇÃO / FÉRIAS -->
 <div id="subnivel" class="hidden">
 
   <div class="field-row field-group">
@@ -237,6 +246,15 @@ button {
 </div>
 
 <script>
+/* CONVERSÃO AUTOMÁTICA PARA MAIÚSCULO */
+document.querySelectorAll('input[type="text"], textarea').forEach(el => {
+  el.addEventListener('input', () => {
+    el.value = el.value.toUpperCase();
+  });
+});
+
+/* JS ORIGINAL */
+
 // Datas e protocolo
 (function () {
   const hoje = new Date();
@@ -261,6 +279,13 @@ portalSim.addEventListener('change', () => {
 });
 portalNao.addEventListener('change', () => {
   if (portalNao.checked) portalSim.checked = false;
+});
+
+document.getElementById('formVaga').addEventListener('submit', function (e) {
+  if (!portalSim.checked && !portalNao.checked) {
+    alert('SELECIONE SIM OU NÃO EM "CADASTRAMENTO PRÉVIO EM PORTAL"');
+    e.preventDefault();
+  }
 });
 
 // Tipo de contratação
