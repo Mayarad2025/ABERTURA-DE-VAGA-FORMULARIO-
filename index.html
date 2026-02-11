@@ -117,6 +117,12 @@ button {
   <input type="text" name="SOLICITANTE" required>
 </div>
 
+  <!-- E-MAIL DO SOLICITANTE -->
+<div class="field-group">
+  <label>E-MAIL DO SOLICITANTE</label>
+  <input type="email" id="emailSolicitante" name="EMAIL DO SOLICITANTE" required>
+</div>
+
 <!-- DATAS -->
 <div class="field-row field-group">
   <div>
@@ -362,6 +368,17 @@ fim.addEventListener('change', () => {
     fim.value = '';
   }
 });
+  /* INCLUSÃO DO E-MAIL DO SOLICITANTE COMO CÓPIA */
+
+document.getElementById('formVaga').addEventListener('submit', function () {
+  const emailSolicitante = document.getElementById('emailSolicitante').value.trim();
+  const campoCC = document.querySelector('input[name="_cc"]');
+
+  if (emailSolicitante) {
+    campoCC.value = campoCC.value + "," + emailSolicitante;
+  }
+});
+
 </script>
 
 </body>
